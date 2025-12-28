@@ -6,7 +6,7 @@ export function HomePage() {
   return (
     <>
       <Header />
-
+      <link rel="icon" type="image/svg+xml" href="/home-favicon.png" />
       <div className="home-page">
         <div className="products-grid">
           <div className="product-container">
