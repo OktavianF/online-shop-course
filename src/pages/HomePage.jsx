@@ -1,39 +1,16 @@
 import { Header } from '../components/Header'
+import axios from 'axios'
 import './HomePage.css'
 import { useEffect, useState } from 'react'
 
 export function HomePage() {
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const controller = new AbortController()
-    const signal = controller.signal
-    let mounted = true
-
-    fetch('/api/products', { signal })
+    axios.get('http://localhost:3000/api/products')
       .then((response) => {
-        if (!response.ok) throw new Error('Network response was not ok')
-        return response.json()
+        setProducts(response.data);
       })
-      .then((data) => {
-        if (mounted) setProducts(data)
-      })
-      .catch((err) => {
-        if (err.name === 'AbortError') {
-          // Request was aborted — nothing to do
-        } else {
-          console.error('Failed to fetch products:', err)
-        }
-      })
-      .finally(() => {
-        if (mounted) setLoading(false)
-      })
-
-    return () => {
-      mounted = false
-      controller.abort()
-    }
   }, [])
 
   return (
